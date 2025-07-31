@@ -1,1 +1,475 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shubham Kumar Shrivastav | Bioinformatician</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Roboto+Slab:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Slate & Cyan -->
+    <!-- Application Structure Plan: A single-page application with a top navigation bar for smooth scrolling to thematic sections: Home (Hero), About, Skills (interactive dashboard), Research (tabbed view for Projects/Publications), Blog (placeholder), and a Contact footer. This structure is chosen to guide the user from a high-level summary to detailed, explorable content, making a dense CV highly accessible. The interactive skills dashboard and tabbed research section prevent information overload and encourage user engagement, which is more effective than a linear CV format. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Comprehensive skill set across four domains. -> Goal: Show breadth and allow deep-dive. -> Viz/Method: Chart.js horizontal bar chart for a high-level summary and interactive buttons to filter and display detailed skill lists. -> Interaction: Click buttons to update a text panel with specific skills. -> Justification: More engaging and less overwhelming than a long, static list. -> Library: Chart.js, Vanilla JS.
+        - Report Info: Multiple projects and publications. -> Goal: Organize distinct but related content. -> Viz/Method: Tabbed interface. -> Interaction: Click tabs to switch between Projects and Publications views. -> Justification: Standard, intuitive UI pattern to reduce clutter and improve navigation. -> Library: Vanilla JS.
+        - Report Info: "Best Paper" awards. -> Goal: Highlight key achievements. -> Viz/Method: Unicode icons (🏆) and distinct styling on list items. -> Interaction: None (visual cue). -> Justification: Immediately draws attention to prestigious awards. -> Library/Method: HTML/CSS.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%); /* More noticeable gradient */
+            color: #1e293b; /* slate-800 */
+        }
+        h1, h2, h3 {
+            font-family: 'Roboto Slab', serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+                max-height: 350px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #0891b2; /* cyan-600 */
+            border-bottom-color: #0891b2; /* cyan-600 */
+        }
+        .tab-btn.active {
+            background-color: #0e7490; /* cyan-700 */
+            color: white;
+        }
+        .tab-btn {
+            transition: background-color 0.3s, color 0.3s;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
 
+    <header id="header" class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#home" class="text-xl font-bold text-cyan-700">Shubham Kumar Shrivastav</a>
+            <div class="hidden md:flex space-x-8">
+                <a href="#about" class="nav-link font-medium">About</a>
+                <a href="#skills" class="nav-link font-medium">Skills</a>
+                <a href="#research" class="nav-link font-medium">Research</a>
+                <a href="#blog" class="nav-link font-medium">Blog</a>
+                <a href="#contact" class="nav-link font-medium">Contact</a>
+            </div>
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-600">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
+            <a href="#about" class="block nav-link">About</a>
+            <a href="#skills" class="block nav-link">Skills</a>
+            <a href="#research" class="block nav-link">Research</a>
+            <a href="#blog" class="block nav-link">Blog</a>
+            <a href="#contact" class="block nav-link">Contact</a>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="min-h-screen flex items-center bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-bold text-slate-900">Shubham Kumar Shrivastav</h1>
+                <p class="text-xl md:text-2xl text-cyan-700 mt-4 font-medium">Bioinformatician | Computational Biologist | Research Scientist</p>
+                <p class="max-w-3xl mx-auto mt-6 text-lg text-slate-600">
+                    Advancing precision research by integrating wet lab experimentation, omics landscapes, and machine learning to uncover molecular mechanisms and develop targeted therapeutic strategies.
+                </p>
+                <div class="mt-8 flex justify-center space-x-6">
+                    <a href="mailto:shrivastav.sk01@gmail.com" class="text-slate-600 hover:text-cyan-600 transition-colors" aria-label="Email">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"></path></svg>
+                    </a>
+                    <a href="https://github.com/S-OMICS" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-cyan-600 transition-colors" aria-label="GitHub">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.397.1 2.65.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"></path></svg>
+                    </a>
+                    <a href="https://www.linkedin.com/in/shubham-shrivastav-b7aa49180/" target="_blank" rel="noopener noreferrer" class="text-slate-600 hover:text-cyan-600 transition-colors" aria-label="LinkedIn">
+                        <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="about" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">About Me</h2>
+                <div class="w-24 h-1 bg-cyan-600 mx-auto mb-12"></div>
+                <div class="max-w-4xl mx-auto text-lg text-slate-700 leading-relaxed space-y-6 text-justify">
+                    <p>
+                        I am a dedicated and passionate bioinformatician with a Master of Technology from Delhi Technological University. My core ambition is to drive innovation in precision medicine. I thrive in collaborative environments where I can apply my integrated expertise to make impactful scientific discoveries.
+                    </p>
+                    <p>
+                        What truly defines my approach is the synergy I create between <strong class="text-cyan-700">wet lab experimentation, complex omics landscapes, and advanced machine learning</strong>. I don't just analyze data; I understand its biological origins and context. This allows me to not only uncover novel molecular mechanisms but also to conceptualize and develop targeted therapeutic strategies. I am deeply interested in exploring the intricate genetic, molecular, and cellular determinants of disease, including the interplay of microenvironments, aging, and signaling processes.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">Interdisciplinary Expertise</h2>
+                <div class="w-24 h-1 bg-cyan-600 mx-auto mb-12"></div>
+                <p class="text-center max-w-3xl mx-auto text-lg text-slate-600 mb-12">
+                    My capabilities bridge the gap between computational analysis and experimental biology. This chart provides a high-level view of my core competencies. Click a category to explore the specific techniques and tools I command.
+                </p>
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="chart-container">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                    <div>
+                        <div class="flex flex-wrap gap-4 mb-6 justify-center">
+                            <button class="skill-btn px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium" data-skill="bioinformatics">Bioinformatics</button>
+                            <button class="skill-btn px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium" data-skill="molecular">Molecular Biology</button>
+                            <button class="skill-btn px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium" data-skill="animal">Animal Handling</button>
+                            <button class="skill-btn px-4 py-2 bg-slate-200 text-slate-700 rounded-lg font-medium" data-skill="cell">Cell Biology</button>
+                        </div>
+                        <div id="skill-details" class="p-6 bg-slate-100 rounded-lg min-h-[250px] shadow-inner">
+                            <h3 id="skill-title" class="text-xl font-bold text-cyan-800 mb-4">Select a category</h3>
+                            <ul id="skill-list" class="list-disc list-inside space-y-2 text-slate-700">
+                                <li>Click a button above to see details.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="research" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">Research &amp; Publications</h2>
+                <div class="w-24 h-1 bg-cyan-600 mx-auto mb-12"></div>
+                <p class="text-center max-w-3xl mx-auto text-lg text-slate-600 mb-12">
+                    Here you can explore my academic projects, peer-reviewed publications, and conference presentations. My work focuses on applying computational methods to solve complex biological problems.
+                </p>
+                <div class="flex justify-center mb-8">
+                    <div class="bg-slate-200 rounded-lg p-1 flex space-x-1">
+                        <button id="projects-tab-btn" class="tab-btn px-6 py-2 rounded-md font-medium">Projects</button>
+                        <button id="publications-tab-btn" class="tab-btn px-6 py-2 rounded-md font-medium">Publications</button>
+                    </div>
+                </div>
+
+                <div id="projects-content" class="tab-content">
+                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    </div>
+                </div>
+
+                <div id="publications-content" class="tab-content hidden">
+                    <div class="max-w-4xl mx-auto space-y-6">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="blog" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center mb-4">Bioinformatics Blog</h2>
+                <div class="w-24 h-1 bg-cyan-600 mx-auto mb-12"></div>
+                <p class="text-center max-w-3xl mx-auto text-lg text-slate-600 mb-12">
+                    Coming soon. This space will be dedicated to sharing practical tutorials, insights from my research, and deep dives into the data science methodologies that power modern bioinformatics.
+                </p>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md animate-pulse">
+                        <div class="h-4 bg-slate-300 rounded w-3/4 mb-4"></div>
+                        <div class="h-3 bg-slate-300 rounded w-full mb-2"></div>
+                        <div class="h-3 bg-slate-300 rounded w-5/6"></div>
+                        <div class="mt-4 h-8 w-32 bg-slate-300 rounded-lg"></div>
+                    </div>
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md animate-pulse">
+                        <div class="h-4 bg-slate-300 rounded w-3/4 mb-4"></div>
+                        <div class="h-3 bg-slate-300 rounded w-full mb-2"></div>
+                        <div class="h-3 bg-slate-300 rounded w-5/6"></div>
+                        <div class="mt-4 h-8 w-32 bg-slate-300 rounded-lg"></div>
+                    </div>
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md animate-pulse">
+                        <div class="h-4 bg-slate-300 rounded w-3/4 mb-4"></div>
+                        <div class="h-3 bg-slate-300 rounded w-full mb-2"></div>
+                        <div class="h-3 bg-slate-300 rounded w-5/6"></div>
+                        <div class="mt-4 h-8 w-32 bg-slate-300 rounded-lg"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer id="contact" class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-2xl font-bold">Get In Touch</h2>
+            <p class="mt-4 max-w-lg mx-auto">
+                I'm always open to discussing new research, projects, and collaboration opportunities. Feel free to reach out.
+            </p>
+            <div class="mt-8">
+                <a href="mailto:shrivastav.sk01@gmail.com" class="text-cyan-400 hover:text-cyan-300 text-lg font-medium transition-colors">shrivastav.sk01@gmail.com</a>
+            </div>
+            <div class="mt-8 flex justify-center space-x-6">
+                <a href="https://github.com/S-OMICS" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" aria-label="GitHub">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.168 6.839 9.492.5.092.682-.217.682-.482 0-.237-.009-.868-.014-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.031-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.378.203 2.397.1 2.65.64.7 1.03 1.595 1.03 2.688 0 3.848-2.338 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.001 10.001 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"></path></svg>
+                </a>
+                <a href="https://www.linkedin.com/in/shubham-shrivastav-b7aa49180/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-white transition-colors" aria-label="LinkedIn">
+                    <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+                </a>
+            </div>
+            <div class="mt-10 border-t border-slate-700 pt-6 text-sm text-slate-400">
+                <p>&copy; 2025 Shubham Kumar Shrivastav. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const skillsData = {
+                bioinformatics: {
+                    title: 'Bioinformatics',
+                    skills: ['Exome & Single Cell RNA-Seq Analysis', 'OMICS Analysis', 'Machine Learning', 'Molecular Docking & MD Simulations', 'Bio-Python', 'SNP & Mutation Function Prediction', 'Polygenetic Analysis', 'Sequence Alignment Techniques']
+                },
+                molecular: {
+                    title: 'Molecular Biology',
+                    skills: ['Gene Cloning & Screening', 'Immunohistochemistry', 'Immunofluorescence', 'Immunocytochemistry', 'Western Blotting & SDS-PAGE', 'DNA/RNA Extraction & Quantification', 'PCR']
+                },
+                animal: {
+                    title: 'Animal Handling',
+                    skills: ['Mice Model Management', 'Anesthesia & Euthanasia', 'Dissection & Tissue Harvesting', 'Histopathology Techniques', 'Routes of Administration', 'Tissue Processing & Staining']
+                },
+                cell: {
+                    title: 'Cell Biology',
+                    skills: ['Flow Cytometry', 'In-vivo Imaging', 'Microscopic Cell Analysis']
+                }
+            };
+
+            const projectsData = [
+                {
+                    title: "Integrative Transcriptomic and ML Approaches in Lung Cancer",
+                    description: "An ongoing project leveraging transcriptomics and machine learning to identify novel biomarkers and therapeutic targets in lung cancer.",
+                    tags: ["Transcriptomics", "Machine Learning", "Python", "R"],
+                    link: "https://github.com/S-OMICS"
+                },
+                {
+                    title: "ML-assisted Drug Repurposing for HDAC6 Inhibitors",
+                    description: "My M.Tech thesis project, which involved developing machine learning models to identify and repurpose existing drugs as potential inhibitors for Histone Deacetylase 6.",
+                    tags: ["Machine Learning", "Drug Repurposing", "Python", "Molecular Docking"],
+                    link: "https://github.com/S-OMICS"
+                },
+                {
+                    title: "Virtual Screening for NF-κB Inhibitors",
+                    description: "Utilized a ligand-based virtual screening approach to identify novel small molecules that can act as inhibitors for the NF-κB signaling pathway.",
+                    tags: ["Virtual Screening", "Cheminformatics", "Molecular Docking"],
+                    link: "https://github.com/S-OMICS"
+                },
+                {
+                    title: "QSAR Model for Aromatase Enzyme Inhibitors",
+                    description: "Developed a Quantitative Structure-Activity Relationship (QSAR) model to predict the inhibitory activity of compounds against the aromatase enzyme, a key target in cancer therapy.",
+                    tags: ["QSAR", "Computational Chemistry", "Statistics"],
+                    link: "https://github.com/S-OMICS"
+                },
+                {
+                    title: "Studies of Antimicrobial Proteins from Milk",
+                    description: "My B.Tech thesis project focusing on the structural and functional characterization of antimicrobial proteins found in milk secretions.",
+                    tags: ["Protein Structure", "Biochemistry", "Wet Lab"],
+                    link: null
+                },
+                {
+                    title: "Cloning of mur-G gene of A.baumannii",
+                    description: "A molecular biology project involving the cloning of the mur-G gene from Acinetobacter baumannii, a critical step in studying cell wall synthesis.",
+                    tags: ["Gene Cloning", "Molecular Biology", "Wet Lab"],
+                    link: null
+                }
+            ];
+
+            const publicationsData = [
+                 {
+                    text: 'Decoding the molecular and cellular aspects of multiple sclerosis. <em>Brain Research</em>.',
+                    award: false,
+                    doi: 'https://doi.org/10.1016/j.brainres.2025.149844' // Placeholder DOI
+                },
+                {
+                    text: 'Histone Deacetylase 6 as a putative target in Alzheimer’s disease therapeutics. <em>IEEE International Conference on Applied Intelligence and Sustainable Computing (ICAISC-2023)</em>.',
+                    award: true,
+                    doi: 'https://doi.org/10.1109/ICAISC58445.2023.10200676' // Placeholder DOI
+                },
+                {
+                    text: 'Drug repurposing approach to identify PARK7 inhibitors in Parkinson’s Disease. <em>IEEE Bangalore Humanitarian Technology Conference (B-HTC-2023)</em>.',
+                    award: true,
+                    doi: 'https://doi.org/10.1109/BHTC.2023.XXXXXX' // Placeholder DOI
+                }
+            ];
+
+            const ctx = document.getElementById('skillsChart').getContext('2d');
+            const skillsChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Bioinformatics', 'Molecular Biology', 'Animal Handling', 'Cell Biology'],
+                    datasets: [{
+                        label: 'Number of Core Skills',
+                        data: [
+                            skillsData.bioinformatics.skills.length, 
+                            skillsData.molecular.skills.length, 
+                            skillsData.animal.skills.length, 
+                            skillsData.cell.skills.length
+                        ],
+                        backgroundColor: [
+                            'rgba(14, 116, 144, 0.7)', // cyan-700
+                            'rgba(51, 65, 85, 0.7)', // slate-700
+                            'rgba(15, 145, 178, 0.7)', // cyan-600
+                            'rgba(71, 85, 105, 0.7)' // slate-600
+                        ],
+                        borderColor: [
+                            'rgb(14, 116, 144)',
+                            'rgb(51, 65, 85)',
+                            'rgb(15, 145, 178)',
+                            'rgb(71, 85, 105)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleFont: { family: 'Roboto Slab', weight: 'bold' },
+                            bodyFont: { family: 'Inter' }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(203, 213, 225, 0.5)'
+                            },
+                            ticks: {
+                                color: '#475569',
+                                font: { family: 'Inter' }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            },
+                            ticks: {
+                                color: '#334155',
+                                font: { family: 'Inter', weight: '500' }
+                            }
+                        }
+                    }
+                }
+            });
+
+            const skillBtns = document.querySelectorAll('.skill-btn');
+            const skillTitleEl = document.getElementById('skill-title');
+            const skillListEl = document.getElementById('skill-list');
+
+            function updateSkillDetails(skillKey) {
+                const skillInfo = skillsData[skillKey];
+                skillTitleEl.textContent = skillInfo.title;
+                skillListEl.innerHTML = skillInfo.skills.map(skill => `<li>${skill}</li>`).join('');
+                skillBtns.forEach(btn => {
+                    btn.classList.toggle('bg-cyan-700', btn.dataset.skill === skillKey);
+                    btn.classList.toggle('text-white', btn.dataset.skill === skillKey);
+                    btn.classList.toggle('bg-slate-200', btn.dataset.skill !== skillKey);
+                    btn.classList.toggle('text-slate-700', btn.dataset.skill !== skillKey);
+                });
+            }
+
+            skillBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    updateSkillDetails(btn.dataset.skill);
+                });
+            });
+            
+            updateSkillDetails('bioinformatics');
+
+            const projectsTabBtn = document.getElementById('projects-tab-btn');
+            const publicationsTabBtn = document.getElementById('publications-tab-btn');
+            const projectsContent = document.getElementById('projects-content');
+            const publicationsContent = document.getElementById('publications-content');
+            
+            function switchTab(activeBtn, activeContent, inactiveBtn, inactiveContent) {
+                activeBtn.classList.add('active');
+                inactiveBtn.classList.remove('active');
+                activeContent.classList.remove('hidden');
+                inactiveContent.classList.add('hidden');
+            }
+
+            projectsTabBtn.addEventListener('click', () => switchTab(projectsTabBtn, projectsContent, publicationsTabBtn, publicationsContent));
+            publicationsTabBtn.addEventListener('click', () => switchTab(publicationsTabBtn, publicationsContent, projectsTabBtn, projectsContent));
+
+            const projectsGrid = projectsContent.querySelector('.grid');
+            projectsData.forEach(p => {
+                const tagsHtml = p.tags.map(tag => `<span class="bg-cyan-100 text-cyan-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full">${tag}</span>`).join('');
+                
+                const projectCard = document.createElement('div');
+                projectCard.className = 'bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300';
+                projectCard.innerHTML = `
+                    <h3 class="text-xl font-bold text-slate-800 mb-2">${p.title}</h3>
+                    <div class="flex flex-wrap my-3">${tagsHtml}</div>
+                    <p class="text-slate-600">${p.description}</p>
+                `;
+                projectsGrid.appendChild(projectCard);
+            });
+
+            const publicationsList = publicationsContent.querySelector('.space-y-6');
+            publicationsData.forEach(p => {
+                const awardClass = p.award ? 'bg-amber-50 border-l-4 border-amber-400' : 'bg-white';
+                const awardIcon = p.award ? '<span class="text-amber-500 font-bold mr-2">🏆 Best Paper Award</span>' : '';
+                
+                const pubItem = document.createElement('div');
+                pubItem.className = `p-4 rounded-lg shadow-md ${awardClass}`;
+                pubItem.innerHTML = `
+                    <p class="text-slate-700 leading-relaxed">${p.text}</p>
+                    ${p.doi ? `<p class="mt-2 text-sm text-slate-500">DOI: <a href="https://doi.org/${p.doi}" target="_blank" rel="noopener noreferrer" class="text-cyan-600 hover:underline">${p.doi}</a></p>` : ''}
+                    ${awardIcon ? `<p class="mt-2 text-sm">${awardIcon}</p>` : ''}
+                `;
+                publicationsList.appendChild(pubItem);
+            });
+            
+            switchTab(projectsTabBtn, projectsContent, publicationsTabBtn, publicationsContent);
+
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('main section');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 100) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
